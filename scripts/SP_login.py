@@ -70,8 +70,7 @@ options.add_argument("--ignore-certificate-errors")
 options.add_argument("--headless")
 # driver = webdriver.Chrome(r"chromedriver", options=options)
 service_object = Service(binary_path)
-driver = webdriver.Chrome(options=options, service=service_object
-)
+driver = webdriver.Chrome(options=options, service=service_object)
 
 ################## for testing one site
 # go to SharePoint login page
@@ -128,9 +127,9 @@ for row in all_rows[1:]:
 
 # TO DO: hit Next Page button as req'd to scrape data from subsequent table pages, append values to columns (loop / function)
 while True:
-    elm = driver.find_element(By.class_name, 'next')
-        if 'inactive' in elm.get_attribute('class'):
-        break;
+    elm = driver.find_element(By.CLASS_NAME, "next")
+    if "inactive" in elm.get_attribute("class"):
+        break
     elm.click()
 
 # find the collection based on the URL
