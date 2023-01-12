@@ -1,8 +1,6 @@
 import sp_constants as constants
 import pandas as pd
-import re
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from chromedriver_py import binary_path
 from selenium.webdriver.common.by import By
@@ -65,9 +63,6 @@ bcts = (
 
 sp_collections = [for1, for2, nrm, aff, irr, env, eao, crts, emli, bcws, irrcs, bcts]
 
-# for holding the resultant list
-element_list = []
-
 # initialize the Chrome driver
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
@@ -75,7 +70,8 @@ options.add_argument("--ignore-certificate-errors")
 options.add_argument("--headless")
 # driver = webdriver.Chrome(r"chromedriver", options=options)
 service_object = Service(binary_path)
-driver = webdriver.Chrome(options=options, service=service_object)
+driver = webdriver.Chrome(options=options, service=service_object
+)
 
 ################## for testing one site
 # go to SharePoint login page
@@ -131,11 +127,16 @@ for row in all_rows[1:]:
         columns[name].append(value)
 
 # TO DO: hit Next Page button as req'd to scrape data from subsequent table pages, append values to columns (loop / function)
+while True:
+    elm = driver.find_element(By.class_name, 'next')
+        if 'inactive' in elm.get_attribute('class'):
+        break;
+    elm.click()
 
 # find the collection based on the URL
 for link in links:
     collection = link[31:-36]
-print(collection)
+# print(collection)
 
 # build pandas dataframe
 df = pd.DataFrame.from_dict(columns, orient="index")
